@@ -15,3 +15,8 @@
 .Header h1 {
   text-align: center;
 }
+
+.PageContainer {
+  position: relative;
+  height: 100%;
+}

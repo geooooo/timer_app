@@ -1,0 +1,109 @@
+.Alarm {
+  position: relative;
+  width: 200px;
+  height: 200px;
+  border-radius: 100%;
+  background-color: rgba(0, 0, 0, 0.1);
+  cursor: pointer;
+  user-select: none;
+}
+
+.AlarmTriggered .AlarmBorder {
+  animation-duration: 1s;
+  animation-timing-function: linear;
+  animation-name: alarmBorderAnimation;
+  animation-iteration-count: infinite;
+}
+@keyframes alarmBorderAnimation {
+  0% { 
+    transform: rotate(360deg);
+  }   
+  100% { 
+    transform: rotate(0);
+  }
+}
+
+.AlarmTriggered .AlarmContent {
+  animation-duration: 2s;
+  animation-timing-function: ease-in-out;
+  animation-name: alarmContentAnimation;
+  animation-iteration-count: infinite;
+  animation-direction: alternate;
+}
+@keyframes alarmContentAnimation {
+  0% { 
+    transform: rotate(0);
+  }   
+  100% { 
+    transform: rotate(360deg);
+    box-shadow:  5px  5px 20px rgba(51, 238, 133, 0.5),
+                -5px  5px 20px rgba(51, 238, 133, 0.5),
+                5px -5px 20px rgba(51, 238, 133, 0.5),
+                -5px -5px 20px rgba(51, 238, 133, 0.5);
+  }
+}
+
+.AlarmBorder {
+  box-sizing: border-box;
+  position: absolute;
+  z-index: 0;
+  width: 100%;
+  height: 100%;
+  border-radius: 100%;
+  border: 3px dashed rgba(43, 205, 113, 0.1);
+  transition-duration: 300ms;
+  transition-property: transform, border-color;
+  transition-timing-function: ease-in-out; 
+}
+.Alarm:hover .AlarmBorder {
+  border-color: rgba(43, 205, 113, 0.5);
+}
+.AlarmOn .AlarmBorder {
+  transform: rotate(360deg);
+  border-color: rgb(43, 205, 113) !important;
+}
+
+.AlarmContent {
+  position: absolute;
+  z-index: 1;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  border-radius: 100%;
+  transition-property: box-shadow;
+  transition-duration: 300ms;
+  transition-timing-function: ease-in-out;
+}
+.AlarmOn:hover .AlarmContent {
+  box-shadow:  5px  5px 10px rgba(51, 238, 133, 0.1),
+              -5px  5px 10px rgba(51, 238, 133, 0.1),
+               5px -5px 10px rgba(51, 238, 133, 0.1),
+              -5px -5px 10px rgba(51, 238, 133, 0.1);
+}
+
+.Time,
+.Separator {
+  width: 100%;
+  outline: none;
+  background-color: transparent;
+  border: none;
+  font-size: 4em;
+  text-align: center;
+}
+
+.Time:first-child {
+  width: 40%;
+  text-align: right;
+}
+.Time:last-child {
+  width: 40%;
+  text-align: left;
+}
+
+.Separator {
+  width: 20%;
+  text-align: center;
+}

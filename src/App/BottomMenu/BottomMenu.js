@@ -2,7 +2,7 @@ import React from 'react';
 
 import classes from './BottomMenu.module.css';
 
-import BottomMenuItemType from '../models/BottomMenuItemType';
+import BottomMenuItemType from '../../models/BottomMenuItemType';
 import BottomMenuItem from './BottomMenuItem/BottomMenuItem';
 
 export default function BottomMenu(props) {

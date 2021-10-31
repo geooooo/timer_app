@@ -5,7 +5,9 @@
   border: 1px solid rgba(47, 234, 128, 1);
   background-color: transparent;
   cursor: pointer;
-  transition: ease-in-out border-color, color, 200ms;
+  transition-property: border-color, color;
+  transition-timing-function: ease-in-out;
+  transition-duration: 200ms;
 }
 .BottomMenuItem:hover {
   border-color: rgba(47, 234, 128, 0.5);

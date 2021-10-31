@@ -14,7 +14,7 @@ export default function BottomMenuItem(props) {
       className={className}
       onClick={onClick}
     >
-      { props.children }
+      {props.children}
     </button>
   );
 }
