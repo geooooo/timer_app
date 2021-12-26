@@ -1,29 +1,28 @@
-import React from 'react';
-import { AlarmState } from '../../models/AlarmState';
-import { AlarmService } from '../../services/AlarmService';
 import classes from './Alarm.module.css';
+import { Component, createRef } from 'react';
+import { AlarmState } from '../../models/AlarmState';
 
-export class Alarm extends React.Component {
+export class Alarm extends Component {
   static alarmCheckTimeIntervalMs = 1000 * 60;
-  static alarmService = new AlarmService();
 
   constructor(props) {
     super(props);
 
     this.state = new AlarmState();
+    this.alarmService = props.alarmService;
     this.timer = null;
-    this.alarmContainerRef = React.createRef();
+    this.alarmContainerRef = createRef();
     this.onStartStopAlarmClick = this.onStartStopAlarmClick.bind(this);
     this.onIncAlarmHoursClick = this.onIncAlarmHoursClick.bind(this);
     this.onIncAlarmMinutesClick = this.onIncAlarmMinutesClick.bind(this);
   }
 
   get formattedHours() {
-    return Alarm.alarmService.getFormattedHours(this.state);
+    return this.alarmService.getFormattedHours(this.state);
   }
   
   get formattedMinutes() {
-    return Alarm.alarmService.getFormattedMinutes(this.state);
+    return this.alarmService.getFormattedMinutes(this.state);
   }
 
   get alarmClassName() {
@@ -45,16 +44,16 @@ export class Alarm extends React.Component {
   }
 
   runAlarm() {
-    if (Alarm.alarmService.isShouldAlarm(this.state)) {
+    if (this.alarmService.isShouldAlarm(this.state)) {
       this.alarm();
       return;
     } 
 
     this.timer = setInterval(() => {
-      if (Alarm.alarmService.isShouldAlarm(this.state)) {
+      if (this.alarmService.isShouldAlarm(this.state)) {
         this.alarm();
       } 
-    }, Alarm.alarmCheckTimeIntervalMs);
+    }, this.alarmCheckTimeIntervalMs);
   }
 
   showAlarm() {
@@ -93,19 +92,19 @@ export class Alarm extends React.Component {
   }
 
   onIncAlarmHoursClick() {
-    if (Alarm.alarmService.isActive(this.state)) {
+    if (this.alarmService.isActive(this.state)) {
       return;
     }
     
-    this.setState({ hours: Alarm.alarmService.getNextHours(this.state) });
+    this.setState({ hours: this.alarmService.getNextHours(this.state) });
   }
 
   onIncAlarmMinutesClick() {
-    if (Alarm.alarmService.isActive(this.state)) {
+    if (this.alarmService.isActive(this.state)) {
       return;
     }
     
-    this.setState({ minutes: Alarm.alarmService.getNextMinutes(this.state) });
+    this.setState({ minutes: this.alarmService.getNextMinutes(this.state) });
   }
 
   render() {

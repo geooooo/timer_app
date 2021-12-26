@@ -1,14 +1,13 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
 import './index.css';
+import { StrictMode } from 'react';
+import { render } from 'react-dom';
 import { App } from './App/App';
-
-// TODO: Append DI
+import { AppService } from './services/AppService';
 
 const app = (
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>
+  <StrictMode>
+    <App appService={new AppService()}/>
+  </StrictMode>
 );
 
-ReactDOM.render(app, document.getElementById('root'));
+render(app, document.getElementById('root'));

@@ -1,20 +1,19 @@
-import React from 'react';
 import classes from './App.module.css';
+import { Component } from 'react';
 import { AppState } from '../models/AppState';
 import { Page } from './Page/Page';
 import { Alarm } from './Alarm/Alarm';
 import { Stopwatch } from './Stopwatch/Stopwatch';
 import { Timer } from './Timer/Timer';
 import { BottomMenu } from './BottomMenu/BottomMenu';
-import { AppService } from '../services/AppService';
+import { AlarmService } from '../services/AlarmService';
 
-export class App extends React.Component {
-  static appService = new AppService();
-
+export class App extends Component {
   constructor(props) {
     super(props);
 
     this.state = new AppState();
+    this.appService = props.appService;
     this.onBottomMenuItemClick = this.onBottomMenuItemClick.bind(this);
   }
 
@@ -24,15 +23,15 @@ export class App extends React.Component {
 
   buildPages() {
     return <div className={classes.PageContainer}>
-      <Page isTop={App.appService.isShowAlarm(this.state)}>
-        <Alarm />
+      <Page isTop={this.appService.isShowAlarm(this.state)}>
+        <Alarm alarmService={new AlarmService()} />
       </Page>
 
-      <Page isTop={App.appService.isShowStopwatch(this.state)}>
+      <Page isTop={this.appService.isShowStopwatch(this.state)}>
         <Stopwatch />
       </Page>
 
-      <Page isTop={App.appService.isShowTimer(this.state)}>
+      <Page isTop={this.appService.isShowTimer(this.state)}>
         <Timer />
       </Page>
     </div>
