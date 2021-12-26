@@ -1,42 +1,38 @@
 import React from 'react';
-
 import classes from './App.module.css';
+import { AppState } from '../models/AppState';
+import { Page } from './Page/Page';
+import { Alarm } from './Alarm/Alarm';
+import { Stopwatch } from './Stopwatch/Stopwatch';
+import { Timer } from './Timer/Timer';
+import { BottomMenu } from './BottomMenu/BottomMenu';
+import { AppService } from '../services/AppService';
 
-import AppState from '../models/AppState';
-import Page from './Page/Page';
-import Alarm from './Alarm/Alarm';
-import Stopwatch from './Stopwatch/Stopwatch';
-import Timer from './Timer/Timer';
-import BottomMenu from './BottomMenu/BottomMenu';
-import BottomMenuItemType from '../models/BottomMenuItemType';
+export class App extends React.Component {
+  static appService = new AppService();
 
-export default class App extends React.Component {
   constructor(props) {
     super(props);
 
-    this.state = { value: new AppState() };
+    this.state = new AppState();
     this.onBottomMenuItemClick = this.onBottomMenuItemClick.bind(this);
   }
 
   onBottomMenuItemClick(itemType) {
-    this.setState((state) => ({
-      value: state.value.copyWith({
-        selectedBottomMenuItem: itemType,
-      })
-    }));
+    this.setState({ selectedBottomMenuItem: itemType });
   }
 
   buildPages() {
     return <div className={classes.PageContainer}>
-      <Page isTop={this.state.value.selectedBottomMenuItem === BottomMenuItemType.alarm}>
+      <Page isTop={App.appService.isShowAlarm(this.state)}>
         <Alarm />
       </Page>
 
-      <Page isTop={this.state.value.selectedBottomMenuItem === BottomMenuItemType.stopwatch}>
+      <Page isTop={App.appService.isShowStopwatch(this.state)}>
         <Stopwatch />
       </Page>
 
-      <Page isTop={this.state.value.selectedBottomMenuItem === BottomMenuItemType.timer}>
+      <Page isTop={App.appService.isShowTimer(this.state)}>
         <Timer />
       </Page>
     </div>
@@ -52,7 +48,7 @@ export default class App extends React.Component {
         {this.buildPages()}
 
         <BottomMenu 
-          selectedItem={this.state.value.selectedBottomMenuItem}
+          selectedItem={this.state.selectedBottomMenuItem}
           onItemClick={this.onBottomMenuItemClick}/>
       </div>
     );

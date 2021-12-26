@@ -1,6 +1,5 @@
 .Page {
-    position: absolute;
-    display: flex;
+    display: none;
     justify-content: center;
     align-items: center;
     height: 100%;
@@ -8,10 +7,6 @@
     box-sizing: border-box;
     padding: 50px;
 }
-.PageTop {
-    z-index: 1;
-}
-.PageOther {
-    z-index: 0;
-    visibility: hidden;
+.PageVisible {
+    display: flex;
 }

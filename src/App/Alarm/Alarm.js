@@ -1,72 +1,66 @@
 import React from 'react';
-
-import AlarmState from '../../models/AlarmState';
-
+import { AlarmState } from '../../models/AlarmState';
+import { AlarmService } from '../../services/AlarmService';
 import classes from './Alarm.module.css';
 
-export default class Alarm extends React.Component {
+export class Alarm extends React.Component {
+  static alarmCheckTimeIntervalMs = 1000 * 60;
+  static alarmService = new AlarmService();
+
   constructor(props) {
     super(props);
 
-    this.state = { value: new AlarmState() };
+    this.state = new AlarmState();
     this.timer = null;
     this.alarmContainerRef = React.createRef();
-    this.alarmCheckTimeIntervalMs = 1000 * 60;
+    this.onStartStopAlarmClick = this.onStartStopAlarmClick.bind(this);
+    this.onIncAlarmHoursClick = this.onIncAlarmHoursClick.bind(this);
+    this.onIncAlarmMinutesClick = this.onIncAlarmMinutesClick.bind(this);
   }
 
-  onStartStopAlarmClick(event) {
-    const target = event.target;
+  get formattedHours() {
+    return Alarm.alarmService.getFormattedHours(this.state);
+  }
+  
+  get formattedMinutes() {
+    return Alarm.alarmService.getFormattedMinutes(this.state);
+  }
 
-    if (target === this.alarmContainerRef.current) {
-      if (this.state.value.isOn) {
-        this.turnOffTimer();
-      } else if (this.state.value.isAlarm) {
-        this.turnOffAlarm();
-      } else {
-        this.turnOn();
-      }
+  get alarmClassName() {
+    let className = classes.Alarm;
+
+    if (this.state.isOn) {
+      className += ' ' + classes.AlarmOn;
+    } else if (this.state.isAlarm) {
+      className += ' ' + classes.AlarmTriggered;
     }
+
+    return className;
   }
 
   turnOn() {    
-    this.setState((state) => ({
-      value: state.value.copyWith({  
-        isOn: true,
-      })
-    }));
+    this.setState({ isOn: true });
 
     this.runAlarm();
   }
 
   runAlarm() {
-    if (this.checkTime()) {
+    if (Alarm.alarmService.isShouldAlarm(this.state)) {
       this.alarm();
       return;
     } 
 
-
     this.timer = setInterval(() => {
-      if (this.checkTime()) {
+      if (Alarm.alarmService.isShouldAlarm(this.state)) {
         this.alarm();
       } 
-    }, this.alarmCheckTimeIntervalMs);
+    }, Alarm.alarmCheckTimeIntervalMs);
   }
 
   showAlarm() {
-    this.setState((state) => ({
-      value: state.value.copyWith({
-        isAlarm: true,
-      })
-    }));
-  }
+    this.setState({ isAlarm: true });
 
-  checkTime() {
-    const currentDate = new Date();
-    const currentHours = currentDate.getHours();
-    const currentMinutes = currentDate.getMinutes();
-
-    return (currentHours   === this.state.value.hours) && 
-           (currentMinutes === this.state.value.minutes);
+    window.alert(`Alarm: ${this.formattedHours}:${this.formattedMinutes} !`);
   }
 
   alarm() {    
@@ -76,76 +70,49 @@ export default class Alarm extends React.Component {
 
   turnOffTimer() {
     clearInterval(this.timer);
-
-    this.setState((state) => ({
-      value: state.value.copyWith({  
-        isOn: false,
-      })
-    }));
+    
+    this.setState({ isOn: false });
   }
 
   turnOffAlarm() {
-    this.setState((state) => ({
-      value: state.value.copyWith({  
-        isAlarm: false,
-      })
-    }));
+    this.setState({ isAlarm: false });
+  }
+
+  onStartStopAlarmClick(event) {
+    if (event.target !== this.alarmContainerRef.current) {
+      return;
+    }
+
+    if (this.state.isOn) {
+      this.turnOffTimer();
+    } else if (this.state.isAlarm) {
+      this.turnOffAlarm();
+    } else {
+      this.turnOn();
+    }
   }
 
   onIncAlarmHoursClick() {
-    if (this.state.value.isActived()) {
+    if (Alarm.alarmService.isActive(this.state)) {
       return;
     }
-
-    const currentHours = this.state.value.hours;
-
-    let nextHours = currentHours + 1;
-    if (nextHours > 23) {
-      nextHours = 0;
-    }
     
-    this.setState((state) => ({
-      value: state.value.copyWith({
-        hours: nextHours,
-      })
-    }));
+    this.setState({ hours: Alarm.alarmService.getNextHours(this.state) });
   }
 
   onIncAlarmMinutesClick() {
-    if (this.state.value.isActived()) {
+    if (Alarm.alarmService.isActive(this.state)) {
       return;
     }
-
-    const currentMinutes = this.state.value.minutes;
-
-    let nextMinutes = currentMinutes + 1;
-    if (nextMinutes > 59) {
-      nextMinutes = 0;
-    }
     
-    this.setState((state) => ({
-      value: state.value.copyWith({
-        minutes: nextMinutes,
-      })
-    }));
-  }
-
-  getAlarmClassName() {
-    let className = classes.Alarm;
-    if (this.state.value.isOn) {
-      className += ' ' + classes.AlarmOn;
-    } else if (this.state.value.isAlarm) {
-      className += ' ' + classes.AlarmTriggered;
-    }
-
-    return className;
+    this.setState({ minutes: Alarm.alarmService.getNextMinutes(this.state) });
   }
 
   render() {
     return (
       <div 
-        className={this.getAlarmClassName()}
-        onClick={this.onStartStopAlarmClick.bind(this)}
+        className={this.alarmClassName}
+        onClick={this.onStartStopAlarmClick}
       >
 
         <div className={classes.AlarmBorder}></div>
@@ -157,18 +124,18 @@ export default class Alarm extends React.Component {
 
           <div 
             className={classes.Time}
-            onClick={this.onIncAlarmHoursClick.bind(this)}
+            onClick={this.onIncAlarmHoursClick}
           >
-            {this.state.value.getFormattedHours()}
+            {this.formattedHours}
           </div>
 
           <div className={classes.Separator}>:</div>
         
           <div 
             className={classes.Time}
-            onClick={this.onIncAlarmMinutesClick.bind(this)}
+            onClick={this.onIncAlarmMinutesClick}
           >
-            {this.state.value.getFormattedMinutes()}
+            {this.formattedMinutes}
           </div>
         </div>
       </div>

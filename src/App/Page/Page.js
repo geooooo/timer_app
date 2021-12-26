@@ -1,9 +1,12 @@
 import classes from './Page.module.css';
 
-export default function Page(props) {
+export function Page(props) {
   const isTop = props.isTop ?? false;
   
-  let className = classes.Page + ' ' + (isTop? classes.Page : classes.PageOther);
+  let className = classes.Page;
+  if (isTop) {
+    className += ' ' + classes.PageVisible;
+  }
 
   return (
     <div className={className}>

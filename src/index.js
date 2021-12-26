@@ -1,9 +1,9 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-
 import './index.css';
+import { App } from './App/App';
 
-import App from './App/App';
+// TODO: Append DI
 
 const app = (
   <React.StrictMode>
@@ -11,7 +11,4 @@ const app = (
   </React.StrictMode>
 );
 
-ReactDOM.render(
-  app,
-  document.getElementById('root')
-);
+ReactDOM.render(app, document.getElementById('root'));

@@ -1,8 +1,7 @@
 import classes from './BottomMenuItem.module.css';
 
-export default function BottomMenuItem(props) {
+export function BottomMenuItem(props) {
   const selected = props.selected ?? false;
-  const onClick = props.onClick;
 
   let className = classes.BottomMenuItem;
   if (selected) {
@@ -12,7 +11,7 @@ export default function BottomMenuItem(props) {
   return (
     <button 
       className={className}
-      onClick={onClick}
+      onClick={props.onClick}
     >
       {props.children}
     </button>
