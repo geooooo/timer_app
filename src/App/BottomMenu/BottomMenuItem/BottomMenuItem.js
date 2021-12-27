@@ -11,8 +11,8 @@ export const BottomMenuItem = memo((props) => {
   return (
     <button 
       className={className}
-      onClick={props.onClick}
-    >
+      onClick={props.onClick}>
+        
       {props.children}
     </button>
   );

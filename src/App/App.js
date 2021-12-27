@@ -25,15 +25,15 @@ export class App extends Component {
   buildPages() {
     return <div className={classes.PageContainer}>
       <Page isTop={this.appService.isShowAlarm(this.state)}>
-        <Alarm />
+        <Alarm/>
       </Page>
 
       <Page isTop={this.appService.isShowStopwatch(this.state)}>
-        <Stopwatch />
+        <Stopwatch/>
       </Page>
 
       <Page isTop={this.appService.isShowTimer(this.state)}>
-        <Timer />
+        <Timer/>
       </Page>
     </div>
   }

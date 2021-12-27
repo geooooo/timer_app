@@ -5,7 +5,7 @@ import { App } from './App/App';
 
 const app = (
   <StrictMode>
-    <App />
+    <App/>
   </StrictMode>
 );
 

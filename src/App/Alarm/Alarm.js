@@ -11,7 +11,6 @@ export class Alarm extends Component {
     super(props);
 
     this.state = new AlarmState();
-    this.alarmService = props.alarmService;
     this.timer = null;
     this.alarmContainerRef = createRef();
     this.onStartStopAlarmClick = this.onStartStopAlarmClick.bind(this);
@@ -20,11 +19,11 @@ export class Alarm extends Component {
   }
 
   get formattedHours() {
-    return this.alarmService.getFormattedHours(this.state);
+    return this.timeService.formatValue(this.state.hours);
   }
   
   get formattedMinutes() {
-    return this.alarmService.getFormattedMinutes(this.state);
+    return this.timeService.formatValue(this.state.minutes);
   }
 
   get alarmClassName() {
@@ -98,7 +97,7 @@ export class Alarm extends Component {
       return;
     }
     
-    this.setState({ hours: this.alarmService.getNextHours(this.state) });
+    this.setState({ hours: this.timeService.getNextHours(this.state.hours) });
   }
 
   onIncAlarmMinutesClick() {
@@ -106,29 +105,28 @@ export class Alarm extends Component {
       return;
     }
     
-    this.setState({ minutes: this.alarmService.getNextMinutes(this.state) });
+    this.setState({ minutes: this.timeService.getNextMinutes(this.state.minutes) });
   }
 
   render() {
     this.alarmService = this.context.alarmService;
+    this.timeService = this.context.timeService;
 
     return (
       <div 
         className={this.alarmClassName}
-        onClick={this.onStartStopAlarmClick}
-      >
+        onClick={this.onStartStopAlarmClick}>
 
-        <div className={classes.AlarmBorder}></div>
+        <div className={classes.AlarmBorder}/>
 
         <div 
           className={classes.AlarmContent}
-          ref={this.alarmContainerRef}
-        >
+          ref={this.alarmContainerRef}>
 
           <div 
             className={classes.Time}
-            onClick={this.onIncAlarmHoursClick}
-          >
+            onClick={this.onIncAlarmHoursClick}>
+            
             {this.formattedHours}
           </div>
 
@@ -136,8 +134,8 @@ export class Alarm extends Component {
         
           <div 
             className={classes.Time}
-            onClick={this.onIncAlarmMinutesClick}
-          >
+            onClick={this.onIncAlarmMinutesClick}>
+              
             {this.formattedMinutes}
           </div>
         </div>
