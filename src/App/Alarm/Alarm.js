@@ -1,13 +1,10 @@
 import classes from './Alarm.module.css';
 import { Component, createRef } from 'react';
 import { AlarmState } from '../../models/AlarmState';
-import { object } from 'prop-types';
+import { DiService } from '../../services/DiService';
 
 export class Alarm extends Component {
-  static propTypes = {
-    alarmService: object.isRequired,
-  };
-
+  static contextType = DiService.context;
   static alarmCheckTimeIntervalMs = 1000 * 60;
 
   constructor(props) {
@@ -113,6 +110,8 @@ export class Alarm extends Component {
   }
 
   render() {
+    this.alarmService = this.context.alarmService;
+
     return (
       <div 
         className={this.alarmClassName}

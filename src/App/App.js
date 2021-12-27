@@ -6,19 +6,15 @@ import { Alarm } from './Alarm/Alarm';
 import { Stopwatch } from './Stopwatch/Stopwatch';
 import { Timer } from './Timer/Timer';
 import { BottomMenu } from './BottomMenu/BottomMenu';
-import { AlarmService } from '../services/AlarmService';
-import { object } from 'prop-types';
+import { DiService } from '../services/DiService';
 
 export class App extends Component {
-  static propTypes = {
-    appService: object.isRequired,
-  };
+  static contextType = DiService.context;
 
   constructor(props) {
     super(props);
 
     this.state = new AppState();
-    this.appService = props.appService;
     this.onBottomMenuItemClick = this.onBottomMenuItemClick.bind(this);
   }
 
@@ -29,7 +25,7 @@ export class App extends Component {
   buildPages() {
     return <div className={classes.PageContainer}>
       <Page isTop={this.appService.isShowAlarm(this.state)}>
-        <Alarm alarmService={new AlarmService()} />
+        <Alarm />
       </Page>
 
       <Page isTop={this.appService.isShowStopwatch(this.state)}>
@@ -43,6 +39,8 @@ export class App extends Component {
   }
 
   render() {
+    this.appService = this.context.appService;
+    
     return (
       <div className={classes.App}>
         <header className={classes.Header}>
