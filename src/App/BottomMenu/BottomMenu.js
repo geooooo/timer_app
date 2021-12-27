@@ -1,6 +1,7 @@
 import classes from './BottomMenu.module.css';
 import { BottomMenuItemType } from '../../models/BottomMenuItemType';
 import { BottomMenuItem } from './BottomMenuItem/BottomMenuItem';
+import { func, string } from 'prop-types';
 
 export function BottomMenu(props) {
   const isShowAlarm = props.selectedItem === BottomMenuItemType.alarm;
@@ -32,3 +33,8 @@ export function BottomMenu(props) {
     </div>
   );
 }
+
+BottomMenu.propTypes = {
+  selectedItem: string.isRequired,
+  onItemClick: func.isRequired,
+};

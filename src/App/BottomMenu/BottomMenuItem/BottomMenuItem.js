@@ -1,10 +1,9 @@
+import { bool, func } from 'prop-types';
 import classes from './BottomMenuItem.module.css';
 
 export function BottomMenuItem(props) {
-  const selected = props.selected ?? false;
-
   let className = classes.BottomMenuItem;
-  if (selected) {
+  if (props.selected) {
     className += ' ' + classes.BottomMenuItemSelected;
   }
 
@@ -16,4 +15,13 @@ export function BottomMenuItem(props) {
       {props.children}
     </button>
   );
+}
+
+BottomMenuItem.propTypes = {
+  selected: bool,
+  onClick: func.isRequired,
+}
+
+BottomMenuItem.defaultProps = {
+  selected: false,
 }

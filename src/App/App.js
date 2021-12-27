@@ -7,8 +7,13 @@ import { Stopwatch } from './Stopwatch/Stopwatch';
 import { Timer } from './Timer/Timer';
 import { BottomMenu } from './BottomMenu/BottomMenu';
 import { AlarmService } from '../services/AlarmService';
+import { object } from 'prop-types';
 
 export class App extends Component {
+  static propTypes = {
+    appService: object.isRequired,
+  };
+
   constructor(props) {
     super(props);
 

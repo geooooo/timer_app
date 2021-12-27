@@ -1,10 +1,9 @@
 import classes from './Page.module.css';
+import { bool, element } from 'prop-types';
 
-export function Page(props) {
-  const isTop = props.isTop ?? false;
-  
+export function Page(props) {  
   let className = classes.Page;
-  if (isTop) {
+  if (props.isTop) {
     className += ' ' + classes.PageVisible;
   }
 
@@ -14,3 +13,12 @@ export function Page(props) {
     </div>
   );
 }
+
+Page.propTypes = {
+  isTop: bool,
+  children: element.isRequired,
+};
+
+Page.defaultProps = {
+  isTop: false,
+};

@@ -1,8 +1,13 @@
 import classes from './Alarm.module.css';
 import { Component, createRef } from 'react';
 import { AlarmState } from '../../models/AlarmState';
+import { object } from 'prop-types';
 
 export class Alarm extends Component {
+  static propTypes = {
+    alarmService: object.isRequired,
+  };
+
   static alarmCheckTimeIntervalMs = 1000 * 60;
 
   constructor(props) {
