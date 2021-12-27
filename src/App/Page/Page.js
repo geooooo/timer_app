@@ -1,7 +1,8 @@
 import classes from './Page.module.css';
 import { bool, element } from 'prop-types';
+import { memo } from 'react';
 
-export function Page(props) {  
+export const Page = memo((props) => {  
   let className = classes.Page;
   if (props.isTop) {
     className += ' ' + classes.PageVisible;
@@ -12,7 +13,7 @@ export function Page(props) {
       {props.children}
     </div>
   );
-}
+});
 
 Page.propTypes = {
   isTop: bool,

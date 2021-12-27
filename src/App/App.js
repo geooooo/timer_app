@@ -40,7 +40,7 @@ export class App extends Component {
 
   render() {
     this.appService = this.context.appService;
-    
+
     return (
       <div className={classes.App}>
         <header className={classes.Header}>

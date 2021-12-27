@@ -1,7 +1,8 @@
 import { bool, func } from 'prop-types';
+import { memo } from 'react';
 import classes from './BottomMenuItem.module.css';
 
-export function BottomMenuItem(props) {
+export const BottomMenuItem = memo((props) => {
   let className = classes.BottomMenuItem;
   if (props.selected) {
     className += ' ' + classes.BottomMenuItemSelected;
@@ -15,7 +16,7 @@ export function BottomMenuItem(props) {
       {props.children}
     </button>
   );
-}
+});
 
 BottomMenuItem.propTypes = {
   selected: bool,

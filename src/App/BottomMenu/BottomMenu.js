@@ -2,8 +2,9 @@ import classes from './BottomMenu.module.css';
 import { BottomMenuItemType } from '../../models/BottomMenuItemType';
 import { BottomMenuItem } from './BottomMenuItem/BottomMenuItem';
 import { func, string } from 'prop-types';
+import { memo } from 'react';
 
-export function BottomMenu(props) {
+export const BottomMenu = memo((props) => {
   const isShowAlarm = props.selectedItem === BottomMenuItemType.alarm;
   const isShowStopwatch = props.selectedItem === BottomMenuItemType.stopwatch;
   const isShowTimer = props.selectedItem === BottomMenuItemType.timer;
@@ -32,7 +33,7 @@ export function BottomMenu(props) {
       </BottomMenuItem>
     </div>
   );
-}
+});
 
 BottomMenu.propTypes = {
   selectedItem: string.isRequired,
